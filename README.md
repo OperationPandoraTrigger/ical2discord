@@ -1,4 +1,6 @@
-# ical2discord Import your ICal events to Discord
+# ical2discord 
+Import your ICal events to Discord
+
 # Pre-Alpha Notice
 This bot is not production ready and lacks **a lot** of features.
 

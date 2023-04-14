@@ -14,31 +14,37 @@ export default {
     .addStringOption((option) =>
       option.setName("ical").setDescription("The iCal URL to look for events")
     ),
-  async execute(interaction) {
+  execute: async function(interaction) {
     const url = interaction.options.getString("ical");
-    const nextEvent = await getNextScheduledEvent(url);
+    const iCalEvent = await getNextScheduledEvent(url);
+    const queuedEvent = {
+      name: iCalEvent.summary,
+      scheduledStartTime: iCalEvent.start,
+      scheduledEndTime: iCalEvent.end,
+      privacyLevel: GuildScheduledEventPrivacyLevel.GuildOnly,
+      entityType: GuildScheduledEventEntityType.External,
+      description: NodeHtmlMarkdown.translate(iCalEvent.description),
+      entityMetadata: { location: iCalEvent.location },
+      reason: `created by ical2discord by the /add command from ${interaction.user.username}#${interaction.user.discriminator}`,
+      image: getAttachedImageFromEvent(iCalEvent)
+    };
 
     const guildScheduledEventManager = new GuildScheduledEventManager(
       interaction.guild
     );
 
-    console.debug(nextEvent)
+    const scheduledEvents = await guildScheduledEventManager.fetch();
+    const existingEvent = scheduledEvents.find((event) => event.name === queuedEvent.summary || event.scheduledStartTime === queuedEvent.start);
+    // d/n: StartTime was untested, scheduledStartTime is an integer, start is a Date object
 
-    // TODO: check if event already exists (by name or startDate) and modify it instead of creating a new one
-    const createdEvent = await guildScheduledEventManager.create({
-      name: nextEvent.summary,
-      scheduledStartTime: nextEvent.start,
-      scheduledEndTime: nextEvent.end,
-      privacyLevel: GuildScheduledEventPrivacyLevel.GuildOnly,
-      entityType: GuildScheduledEventEntityType.External,
-      description: NodeHtmlMarkdown.translate(nextEvent.description),
-      entityMetadata: { location: nextEvent.location },
-      reason: `created by ical2discord by the /add command from ${interaction.user.username}#${interaction.user.discriminator}`,
-      image: getAttachedImageFromEvent(nextEvent),
-    });
-
-    await interaction.reply("Added Event: " + createdEvent.name);
-  },
+    if (existingEvent) {
+      const { name } = await existingEvent.edit(queuedEvent);
+      await interaction.reply(`Modified Event: ${name}`);
+    } else {
+      const { name } = await guildScheduledEventManager.create(queuedEvent);
+      await interaction.reply(`Added Event: ${createdEvent.name}`);
+    }
+  }
 };
 
 function getNextScheduledEvent(url) {
