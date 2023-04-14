@@ -1,5 +1,5 @@
 import "dotenv/config";
-import { Client, Collection, GatewayIntentBits, GuildScheduledEventManager } from "discord.js";
+import { Client, Collection, GatewayIntentBits } from "discord.js";
 import { getCommands } from "./util/getCommands.js";
 import { getEvents } from "./util/getEvents.js";
 import { fileURLToPath } from "url";

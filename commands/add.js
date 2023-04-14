@@ -42,7 +42,7 @@ export default {
       await interaction.reply(`Modified Event: ${name}`);
     } else {
       const { name } = await guildScheduledEventManager.create(queuedEvent);
-      await interaction.reply(`Added Event: ${createdEvent.name}`);
+      await interaction.reply(`Added Event: ${name}`);
     }
   }
 };
