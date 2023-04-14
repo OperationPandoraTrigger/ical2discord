@@ -1,0 +1,24 @@
+{
+  "name": "ical2discord",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Frozen_byte",
+  "license": "MIT",
+  "dependencies": {
+    "discord.js": "^14.9.0",
+    "dotenv": "^16.0.3",
+    "node-html-markdown": "^1.3.0",
+    "node-ical": "^0.16.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.38.0",
+    "eslint-config-prettier": "^8.8.0",
+    "prettier": "2.8.7"
+  }
+}
