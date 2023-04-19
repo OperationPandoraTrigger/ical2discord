@@ -12,9 +12,7 @@ export async function getEvents(foldersPath: any) {
   for (const folder of folders) {
     // Grab all the command files from the commands directory you created earlier
     const path = join(foldersPath, folder);
-    const files = readdirSync(path).filter((file) =>
-      file.endsWith(".js")
-    );
+    const files = readdirSync(path).filter((file) => file.endsWith(".js"));
     // Grab the SlashCommandBuilder#toJSON() output of each command's data for deployment
     for (const file of files) {
       const filePath = join(path, file);

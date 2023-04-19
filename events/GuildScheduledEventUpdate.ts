@@ -1,4 +1,8 @@
-import { Events, GuildScheduledEvent, GuildScheduledEventStatus } from "discord.js";
+import {
+  Events,
+  GuildScheduledEvent,
+  GuildScheduledEventStatus,
+} from "discord.js";
 
 const EventCreate = {
   name: Events.GuildScheduledEventUpdate,
