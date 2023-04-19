@@ -14,27 +14,34 @@ export default {
     .addStringOption((option) =>
       option.setName("ical").setDescription("The iCal URL to look for events")
     ),
-  execute: async function(interaction) {
+  execute: async function(interaction: any) {
     const url = interaction.options.getString("ical");
     const iCalEvent = await getNextScheduledEvent(url);
     const queuedEvent = {
+      // @ts-expect-error TS(2532): Object is possibly 'undefined'.
       name: iCalEvent.summary,
+      // @ts-expect-error TS(2532): Object is possibly 'undefined'.
       scheduledStartTime: iCalEvent.start,
+      // @ts-expect-error TS(2532): Object is possibly 'undefined'.
       scheduledEndTime: iCalEvent.end,
       privacyLevel: GuildScheduledEventPrivacyLevel.GuildOnly,
       entityType: GuildScheduledEventEntityType.External,
+      // @ts-expect-error TS(2532): Object is possibly 'undefined'.
       description: NodeHtmlMarkdown.translate(iCalEvent.description),
+      // @ts-expect-error TS(2532): Object is possibly 'undefined'.
       entityMetadata: { location: iCalEvent.location },
       reason: `created by ical2discord by the /add command from ${interaction.user.username}#${interaction.user.discriminator}`,
       image: getAttachedImageFromEvent(iCalEvent)
     };
 
+    // @ts-expect-error TS(2673): Constructor of class 'GuildScheduledEventManager' ... Remove this comment to see the full error message
     const guildScheduledEventManager = new GuildScheduledEventManager(
       interaction.guild
     );
 
     const scheduledEvents = await guildScheduledEventManager.fetch();
-    const existingEvent = scheduledEvents.find((event) => event.name === queuedEvent.summary || event.scheduledStartTime === queuedEvent.start);
+    // @ts-expect-error TS(2339): Property 'summary' does not exist on type '{ name:... Remove this comment to see the full error message
+    const existingEvent = scheduledEvents.find((event: any) => event.name === queuedEvent.summary || event.scheduledStartTime === queuedEvent.start);
     // d/n: StartTime was untested, scheduledStartTime is an integer, start is a Date object
 
     if (existingEvent) {
@@ -47,7 +54,7 @@ export default {
   }
 };
 
-function getNextScheduledEvent(url) {
+function getNextScheduledEvent(url: any) {
   return fromURL(url).then((data) => {
     const now = new Date();
 
@@ -57,6 +64,7 @@ function getNextScheduledEvent(url) {
         return event.type === "VEVENT" && event.start > now;
       })
       .sort((a, b) => {
+        // @ts-expect-error TS(2339): Property 'start' does not exist on type 'CalendarC... Remove this comment to see the full error message
         return a.start > b.start ? 1 : -1;
       });
 
@@ -64,7 +72,7 @@ function getNextScheduledEvent(url) {
   });
 }
 
-function getAttachedImageFromEvent(event) {
+function getAttachedImageFromEvent(event: any) {
   return "https://pbs.twimg.com/profile_banners/1151760434313216000/1563820747/1080x360";
   // TODO: I hate google, the URL does not work with discords image attribute.
   // return event.attach?.find((attachment) => attachment.params?.FMTTYPE.startsWith("image/"))?.val

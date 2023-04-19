@@ -1,7 +1,7 @@
 import { join } from "node:path";
 import { readdirSync } from "node:fs";
 
-export async function getEvents(foldersPath) {
+export async function getEvents(foldersPath: any) {
   const events = [];
   // Grab all the command files from the events directory you created earlier
 

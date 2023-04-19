@@ -1,7 +1,7 @@
 import { join } from "node:path";
 import { readdirSync } from "node:fs";
 
-export async function getCommands(foldersPath) {
+export async function getCommands(foldersPath: any) {
   const commands = [];
   // Grab all the command files from the commands directory you created earlier
   const folders = ["./"].concat(
