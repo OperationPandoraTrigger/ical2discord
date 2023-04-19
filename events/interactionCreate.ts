@@ -1,14 +1,16 @@
-import { Events } from 'discord.js';
+import { ChatInputCommandInteraction, Events } from "discord.js";
 
-export default {
+const InteractionCreate = {
   name: Events.InteractionCreate,
-  async execute(interaction: any) {
+  async execute(interaction: ChatInputCommandInteraction) {
     if (!interaction.isChatInputCommand()) return;
 
     const command = interaction.client.commands.get(interaction.commandName);
 
     if (!command) {
-      console.error(`[ERROR] No command matching ${interaction.commandName} was found.`);
+      console.error(
+        `[ERROR] No command matching ${interaction.commandName} was found.`
+      );
       return;
     }
 
@@ -20,3 +22,4 @@ export default {
     }
   },
 };
+export default InteractionCreate;

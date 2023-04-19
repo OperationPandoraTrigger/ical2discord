@@ -19,7 +19,7 @@ export async function getCommands(foldersPath: any) {
       const filePath = join(path, file);
       const { default: command } = await import(filePath);
 
-      if ("data" in command && "execute" in command) {
+      if (command && "data" in command && "execute" in command) {
         commands.push(command);
       } else {
         console.warn(

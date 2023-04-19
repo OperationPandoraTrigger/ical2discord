@@ -6,7 +6,10 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "deploy_commands": "node deploy-commands.js",
+    "deploy_commands": "./node_modules/typescript/bin/tsc && node dist/deploy-commands.js",
+    "start": "node ./dist/app.js",
+    "build": "./node_modules/typescript/bin/tsc",
+    "dev": "tsc-watch --onSuccess 'node ./dist/app.js'",
     "run": "node app.js"
   },
   "keywords": [],
@@ -16,13 +19,15 @@
     "discord.js": "^14.9.0",
     "dotenv": "^16.0.3",
     "node-html-markdown": "^1.3.0",
-    "node-ical": "^0.16.0"
+    "node-ical": "^0.16.0",
+    "node-schedule": "^2.1.1"
   },
   "devDependencies": {
     "eslint": "^8.38.0",
     "eslint-config-prettier": "^8.8.0",
     "prettier": "2.8.7",
     "ts-migrate": "^0.1.35",
+    "tsc-watch": "^6.0.0",
     "typescript": "^5.0.4"
   }
 }

@@ -20,7 +20,7 @@ export async function getEvents(foldersPath: any) {
       const filePath = join(path, file);
       const { default: event } = await import(filePath);
 
-      if ("name" in event && "execute" in event) {
+      if (event && "name" in event && "execute" in event) {
         events.push(event);
       } else {
         console.log(
