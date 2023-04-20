@@ -3,13 +3,20 @@ import {
   GuildScheduledEvent,
   GuildScheduledEventStatus,
 } from "discord.js";
+import { scheduleEvent } from "../util/scheduleEvent.js";
 
 const EventCreate = {
   name: Events.GuildScheduledEventUpdate,
   async execute(event: GuildScheduledEvent) {
-    if (event.status === GuildScheduledEventStatus.Active) {
-      console.debug("GuildScheduledEvent went Active");
-      // TODO: reschedule next event
+    if (event.guild && event.status === GuildScheduledEventStatus.Active) {
+      const [response, nextEvent] = await scheduleEvent(
+        event.guild.scheduledEvents
+      );
+      console.debug(
+        "GuildScheduledEvent went Active",
+        response,
+        nextEvent?.name
+      );
     }
   },
 };

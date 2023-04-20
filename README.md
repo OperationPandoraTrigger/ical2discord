@@ -14,3 +14,5 @@ Should be simply as [adding the bot to your server](https://discord.com/api/oaut
 * [Ui icons created by IconMarketPK - Flaticon](https://www.flaticon.com/free-icons/ui "ui icons")
 * ical parser https://github.com/jens-maus/node-ical
 * html2markdown https://github.com/crosstype/node-html-markdown
+* abstract-level https://github.com/Level/abstract-level
+* discord.js https://github.com/discordjs/discord.js

@@ -1,15 +1,22 @@
 import "dotenv/config";
-import { Client, Collection, Events, GatewayIntentBits } from "discord.js";
+import { Client, Collection, GatewayIntentBits } from "discord.js";
 import { getCommands } from "./util/getCommands.js";
 import { getEvents } from "./util/getEvents.js";
 import { fileURLToPath } from "url";
 import { dirname, join } from "node:path";
+import storage from "node-persist";
+
+await storage.init({
+  dir: "./db",
+});
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 // Create a new client instance
-const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildScheduledEvents] });
+const client = new Client({
+  intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildScheduledEvents],
+});
 
 // Collect and setup commands
 client.commands = new Collection();
@@ -22,8 +29,6 @@ commands.forEach((command) => {
 // Collect and setup events
 const events = await getEvents(join(__dirname, "events"));
 events.forEach((event) => {
-
-  console.debug(`Registering event ${event.name}`)
   if (event.once) {
     client.once(event.name, (...args) => event.execute(...args));
   } else {
@@ -33,4 +38,3 @@ events.forEach((event) => {
 
 // Log in to Discord with your client's token
 await client.login(process.env.BOT_TOKEN);
-
