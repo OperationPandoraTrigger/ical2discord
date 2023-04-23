@@ -35,7 +35,7 @@ export async function scheduleEvent(
     entityType: GuildScheduledEventEntityType.External,
     description: NodeHtmlMarkdown.translate(iCalEvent.description),
     entityMetadata: { location: iCalEvent.location },
-    image: getAttachedImageFromEvent(iCalEvent),
+    image: getAttachedImageFromEvent(iCalEvent.attach),
   };
 
   const scheduledEvents = await guildScheduledEventManager.fetch();
@@ -72,13 +72,15 @@ function getNextScheduledEvent(iCalUrl: string) {
   });
 }
 
-function getAttachedImageFromEvent(event: VEvent & { attach?: any[] }) {
-  const imageurl = event.attach?.find((attachment) =>
+function getAttachedImageFromEvent(...attach: VEvent["attach"][]) {
+  if (!attach) return null;
+
+  const imageurl = attach.find?.((attachment) =>
     attachment.params?.FMTTYPE.startsWith("image/")
   )?.val;
 
   // d/n: I hate google, the URL does not work with discords image attribute. hope this works
-  if (imageurl.startsWith("https://drive.google.com/open?id=")) {
+  if (imageurl?.startsWith("https://drive.google.com/open?id=")) {
     return imageurl?.replace(
       "https://drive.google.com/open?id=",
       "https://drive.google.com/uc?id="
