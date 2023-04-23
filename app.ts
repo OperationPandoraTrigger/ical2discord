@@ -5,6 +5,7 @@ import { getEvents } from "./util/getEvents.js";
 import { fileURLToPath } from "url";
 import { dirname, join } from "node:path";
 import storage from "node-persist";
+import {strict as assert} from "assert";
 
 await storage.init({
   dir: "./db",
@@ -37,4 +38,5 @@ events.forEach((event) => {
 });
 
 // Log in to Discord with your client's token
+assert(process.env.BOT_TOKEN, "BOT_TOKEN is not defined, please define it in .env file");
 await client.login(process.env.BOT_TOKEN);

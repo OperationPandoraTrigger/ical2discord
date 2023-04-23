@@ -5,10 +5,8 @@
   "main": "app.js",
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "deploy_commands": "./node_modules/typescript/bin/tsc && node dist/deploy-commands.js",
-    "start": "node ./dist/app.js",
-    "build": "./node_modules/typescript/bin/tsc",
+    "build": "rm -rf dist && tsc",
     "dev": "rm -rf dist && tsc-watch --onSuccess 'node ./dist/app.js'",
     "run": "node app.js"
   },
